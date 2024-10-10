@@ -28,12 +28,12 @@ def init_accidents_db():
                 'month': current_date_time.month,
                 'date': current_date_time.day
             },
-            'beat_of_occurrence': row['BEAT_OF_OCCURRENCE'],
+            'beat_of_occurrence': safe_int(row['BEAT_OF_OCCURRENCE']),
             'injuries': {
-                'total': row['INJURIES_TOTAL'],
-                'fatal': row['INJURIES_FATAL'],
-                'incapacitating': row['INJURIES_INCAPACITATING'],
-                'non_incapacitating': row['INJURIES_NON_INCAPACITATING'],
+                'total': safe_int(row['INJURIES_TOTAL']),
+                'fatal': safe_int(row['INJURIES_FATAL']),
+                'incapacitating': safe_int(row['INJURIES_INCAPACITATING']),
+                'non_incapacitating': safe_int(row['INJURIES_NON_INCAPACITATING']),
             },
             'contributors': {
                 'prim_contributory_cause': row['PRIM_CONTRIBUTORY_CAUSE'],
@@ -50,5 +50,11 @@ def init_accidents_db():
         accidents.insert_many(chunk)
     print("end insert data")
 
+
+def safe_int(value, default=0):
+    try:
+        return int(value)
+    except ValueError:
+        return default
 
 
