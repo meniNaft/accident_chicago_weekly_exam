@@ -13,7 +13,6 @@ def read_scv(csv_path: str):
 def init_accidents_db():
     accidents.drop()
     data = []
-    date_format = '%m/%d/%Y %H:%M'
     for row in read_scv('./data/data_not_full.csv'):
         if len(data) > 0 and any(x for x in data if x["record_id"] == row['CRASH_RECORD_ID']):
             continue
