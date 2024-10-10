@@ -8,6 +8,6 @@ csv_blueprint = Blueprint("csv", __name__)
 def start_csv_insert():
     try:
         init_accidents_db()
-        return jsonify({"message": "CSV data insertion started"}), 202
+        return jsonify({"message": "CSV data inserted"}), 202
     except Exception as e:
         return jsonify({"error": str(e)}), 500
