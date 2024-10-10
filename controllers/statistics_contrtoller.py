@@ -27,3 +27,20 @@ def get_accidents_by_area(beat_id: int):
     return jsonify(res), 200
 
 
+@statistics_blueprint.route("/accidents_by_cause/<int:beat_id>", methods=['GET'])
+def get_accidents_by_cause(beat_id: int):
+    if not beat_id:
+        return jsonify({"error": "beat ID is required"}), 400
+
+    res = statistics_service.get_accidents_by_cause(beat_id)
+    return jsonify(res), 200
+
+
+@statistics_blueprint.route("/injury_statistics/<int:beat_id>", methods=['GET'])
+def get_injury_statistics(beat_id: int):
+    if not beat_id:
+        return jsonify({"error": "beat ID is required"}), 400
+
+    res = statistics_service.get_injury_statistics_by_area(beat_id)
+    return jsonify(json.loads(json_util.dumps(res))), 200
+

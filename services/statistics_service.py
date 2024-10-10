@@ -33,3 +33,12 @@ def get_accidents_by_area_and_time(beat_id, time_type, str_date_time):
         "start_date": start_date.isoformat(),
         "end_date": end_date.isoformat()
     }
+
+
+def get_accidents_by_cause(beat_id: int):
+    return accidents_repo.get_accidents_by_cause(beat_id)
+
+
+def get_injury_statistics_by_area(beat_id: int):
+    res = accidents_repo.get_injury_statistics_by_area(beat_id)
+    return res
