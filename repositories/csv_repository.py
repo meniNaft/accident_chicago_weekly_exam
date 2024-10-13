@@ -19,11 +19,9 @@ def read_scv(csv_path: str):
 
 def init_accidents_db():
     accidents.drop()
-    data = []
+    data_dict = {}
+    print(datetime.datetime.now(), " - start load data")
     for row in read_scv(csv_url):
-        if len(data) > 0 and any(x for x in data if x["record_id"] == row['CRASH_RECORD_ID']):
-            continue
-
         new_accident = {
             'record_id': row['CRASH_RECORD_ID'],
             'full_date': row['CRASH_DATE'],
@@ -39,15 +37,19 @@ def init_accidents_db():
                 'sec_contributory_cause': row['SEC_CONTRIBUTORY_CAUSE'],
             }
         }
-        data.append(new_accident)
-
+        data_dict[row['CRASH_RECORD_ID']] = new_accident
+        # data.append(new_accident)
+    print(datetime.datetime.now(), " - start inserting data")
+    data = list(data_dict.values())
     chunk_size = 100
     data_chunks = [data[i:i+chunk_size] for i in range(0, len(data), chunk_size)]
 
     for chunk in data_chunks:
         accidents.insert_many(chunk)
 
+    print(datetime.datetime.now(), " - end inserting data")
     create_indexes()
+    print(datetime.datetime.now(), " - complete inserting and create indexes")
 
 
 def safe_int(value, default=0):
